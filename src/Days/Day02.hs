@@ -12,7 +12,7 @@ run f g = prep . composeF (*) f g . foldl (flip update) ((0,0),0)
 type Env a b = (a,b) -> (a,b)
 
 update :: (String,Int) -> Env  (Int,Int) Int
-update ("forward",f) = compose (compose ((+f) . fst . fst) (snd . fst)) ((+) <$> (*f) . snd . fst <*> snd)
+update ("forward",f) = compose (compose ((+f) . fst . fst) (snd . fst)) (composeF (+) ((*f) . snd . fst) snd)
 update ("up",u)      = compose (compose (fst . fst) (flip (-) u . snd . fst)) snd
 update ("down",d)    = compose (compose (fst . fst) ((+d) . snd . fst)) snd
 
