@@ -43,6 +43,7 @@ instance Show a => Show (Solution a) where
 compose :: (Show b, Show c) => (a -> b) -> (a -> c) -> a -> (b,c)
 compose f g = ((,) <$> f <*> g)
 
+composeF f g h = f <$> g <*> h
 prep :: Show a => a -> Solution String
 prep a = Sol (show a)
 
