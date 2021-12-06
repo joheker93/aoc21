@@ -1,38 +1,29 @@
 {-# LANGUAGE LambdaCase #-}
+
 module Days.Day04 where
 import Solution
 import Control.Arrow ((&&&))
---import Control.Applicative (liftA2)
-import Data.List (transpose,init,elemIndex,maximum)
+import Data.List (elemIndex,transpose)
 
---Part 1
-solA :: Run ([Int],[[[Int]]]) String
-solA = prep  . complete run isWinner
-  where dig  = map . map . map
+type Bingo = ([Int], [Chart])
+type Chart = [[Int]]
 
-complete f g = calc . (f g <$> fst <*> dig ((,) <$> const False <*> id) . snd)
+solA :: Run Bingo String
+solA = complete minimum
 
-run f [] _ = (-1,[])
-run f (x:xs) cs = case go (x:xs) cs [] of
-  [sol]  -> (x,sol)
-  rep    -> run f xs rep
+solB :: Run Bingo String
+solB = complete maximum
+
+-- Main solver
+complete f = prep . calc . (flip (untilWin isWinner) <$>
+         ((flip (!!) <$> maybe undefined id . ((elemIndex <$> f <*> id) . (go isWinner <$> fst <*> inp)) <*> inp)) <*> fst)
   where
-    go _ [] s          = s
-    go (x:xs) (c:cs) s = let m = mark x c
-                         in if (f m) then [m] else go (x:xs) cs (s ++ [m])
-
---- Part 2
-solB :: Run ([Int],[[[Int]]]) String
-solB = prep . calc . (flip (untilWin isWinner) <$>
-         ((flip (!!) <$> maybe undefined id . ((elemIndex <$> maximum <*> id) . (go isWinner <$> fst <*> inp)) <*> inp)) <*> fst)
-  where
-    inp = dig ((,) <$> const False <*> id) . snd
+    inp     = dig ((,) <$> const False <*> id) . snd
     go f xs = map (counts f xs)
+    dig     = map . map . map
 
 --Utils
-dig = map . map . map
-
-untilWin f _ [] = (-1,[])
+untilWin f _ []     = (-1,[])
 untilWin f (x:xs) c = let m = mark x c
                       in if (f m) then (x,m) else untilWin f xs m
 
