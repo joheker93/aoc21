@@ -1,18 +1,26 @@
 module Days.Day07 where
 import Solution
+import Data.List(sort)
 
-solA :: Show a => b -> Solution a
-solA xs = Pending
+solA :: Run [Int] String
+solA =  prep . sum . (map <$> dist . med <*> id)
+  where
+    med = (!!) <$> sort <*> flip div 2 . length
 
-solB :: Show a => b -> Solution a
-solB xs = Pending
+solB :: Run [Int] String
+solB = prep . minimum . map sum . (flip dynDist <$> maximum <*> id)
+  where
+    dynDist _ 0  = []
+    dynDist xs x = map (dSum x) xs : dynDist xs (x-1)
+    dSum  = ((\k -> k*(k+1) `div` 2) .) . dist
 
+dist a b = abs (a-b)
 
-parseA = id
-parseB = id
+-- Parsing
+parseA = parse
+parseB = parse
 
-
-
-
-
-
+parse = map stoi . words . map rep
+  where
+    rep ',' = ' '
+    rep x   = x
