@@ -56,17 +56,21 @@ library
                  base ^>=4.15.0.0,
                  containers,
                  deepseq >= 1.4.5.0,
+                 mtl >= 2.2.2,
                  parsec >= 3.1.14.0,
+                 split,
                  text >= 1.2.4.1,
                  time,
                  vector,
-                 split
+                 fingertree,
+                 graphs,
+                 fgl
                 
   default-language: Haskell2010
 
 executable aoc21
     main-is:          Main.hs
-
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
     -- Modules included in this executable, other than Main.
 
     -- LANGUAGE extensions used by modules in this package.
@@ -76,10 +80,15 @@ executable aoc21
                       base ^>=4.15.0.0,
                       containers,
                       deepseq >= 1.4.5.0,
+                      mtl >= 2.2.2,
                       parsec >= 3.1.14.0,
+                      split,
                       text >= 1.2.4.1,
                       time,
-                      split
+                      fingertree,
+                      graphs,
+                      fgl
+
 
                       
 
