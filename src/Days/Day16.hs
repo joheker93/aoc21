@@ -85,4 +85,3 @@ pPacket = do
         ps <- iter (l - (g - g2))
         return $ p : ps else do
         return $ [p]
-

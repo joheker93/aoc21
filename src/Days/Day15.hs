@@ -61,4 +61,3 @@ build m [] i     = (m,i)
 build m (x:xs) i = build (M.insert i x m) xs (i+1)
 
 indexes h w = [(x,y) | x <- [0..w-1],y <- [0..h-1]]
-
